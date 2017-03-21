@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="@string/daily"
+        android:icon="@mipmap/ic_bottomnavigation_daily" />
+
+    <item
+        android:title="@string/theme"
+        android:icon="@mipmap/ic_bottomnavigation_theme" />
+
+    <item
+        android:title="@string/hot"
+        android:icon="@mipmap/ic_bottomnavigation_hot" />
+
+    <item
+        android:title="@string/more"
+        android:icon="@mipmap/ic_bottomnavigation_more" />
+</menu>
