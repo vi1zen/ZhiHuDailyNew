@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2016/7/23.
+ * Created by Destiny on 2017/3/15.
  * 列表里面的Daily Item
  */
 public class Daily implements Serializable {
@@ -24,6 +24,14 @@ public class Daily implements Serializable {
     private boolean multiPic;
 
     private ArrayList<String> images;
+
+    private String image;//轮播图
+
+    private boolean isRead;
+
+    private int showType;
+
+    private String date;
 
     public int getId() {
         return id;
@@ -73,6 +81,38 @@ public class Daily implements Serializable {
         this.images = images;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public boolean getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(boolean read) {
+        isRead = read;
+    }
+
+    public int getShowType() {
+        return showType;
+    }
+
+    public void setShowType(int showType) {
+        this.showType = showType;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "Daily{" +
@@ -82,6 +122,7 @@ public class Daily implements Serializable {
                 ", title='" + title + '\'' +
                 ", multiPic=" + multiPic +
                 ", images=" + images +
+                ", image='" + image + '\'' +
                 '}';
     }
 }

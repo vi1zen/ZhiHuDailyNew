@@ -1,27 +1,40 @@
 package cn.vi1zen.zhihudailynew.ui.daily;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.jude.rollviewpager.RollPagerView;
+import com.jude.rollviewpager.adapter.LoopPagerAdapter;
+import com.jude.rollviewpager.adapter.StaticPagerAdapter;
+import com.jude.rollviewpager.hintview.ColorPointHintView;
+import com.jude.rollviewpager.hintview.IconHintView;
+import com.jude.rollviewpager.hintview.TextHintView;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import cn.vi1zen.zhihudailynew.R;
 import cn.vi1zen.zhihudailynew.model.DailiesJson;
+import cn.vi1zen.zhihudailynew.model.TopStory;
 import cn.vi1zen.zhihudailynew.net.OkHttpSync;
 import cn.vi1zen.zhihudailynew.net.UrlConstants;
 import cn.vi1zen.zhihudailynew.net.ZhiHuHttp;
 import cn.vi1zen.zhihudailynew.tool.DividerItemDecoration;
 import cn.vi1zen.zhihudailynew.tool.RecyclerViewOnLoadMoreListener;
+import cn.vi1zen.zhihudailynew.tool.RollPagerAdapter;
 import cn.vi1zen.zhihudailynew.tool.StateTool;
 import cn.vi1zen.zhihudailynew.ui.MainFragment;
 import okhttp3.Response;
@@ -34,13 +47,12 @@ import rx.schedulers.Schedulers;
  * Created by Destiny on 2017/3/14.
  */
 
-public class DailyMainFragment extends MainFragment implements  SwipeRefreshLayout.OnRefreshListener{
+public class DailyMainFragment extends MainFragment implements  DailyRecycleViewAdapter.LoadMoreDataListener,SwipeRefreshLayout.OnRefreshListener{
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private LinearLayout linearLayout;
     private LinearLayoutManager linearLayoutManager;
     private DailyRecycleViewAdapter dailyRecycleViewAdapter;
-    private RecyclerViewOnLoadMoreListener listener;
 
     private String endDate;//当前App里有的最新日报的时间
 
@@ -49,6 +61,10 @@ public class DailyMainFragment extends MainFragment implements  SwipeRefreshLayo
     private Subscriber subscriber;
 
     private StateTool stateTool;
+
+    private RollPagerView rollPagerView;//轮播图
+
+    private RollPagerAdapter rollPagerAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,13 +86,16 @@ public class DailyMainFragment extends MainFragment implements  SwipeRefreshLayo
         recyclerView.setLayoutManager(linearLayoutManager = new LinearLayoutManager(getActivity()));
 
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));//设置分割线
-        recyclerView.setAdapter(dailyRecycleViewAdapter = new DailyRecycleViewAdapter(this));
-        recyclerView.addOnScrollListener(new RecyclerViewOnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                getMore(startDate);
-            }
-        });
+        dailyRecycleViewAdapter = new DailyRecycleViewAdapter(this,recyclerView);
+
+        //轮播图
+        View linearView = LayoutInflater.from(getActivity()).inflate(R.layout.header_carousel_image,container,false);
+        rollPagerView = (RollPagerView) linearView.findViewById(R.id.rollPagerView);
+        rollPagerView.setAdapter(rollPagerAdapter = new RollPagerAdapter(rollPagerView));
+        dailyRecycleViewAdapter.setHeaderView(rollPagerView);
+
+        dailyRecycleViewAdapter.setOnMoreDataLoadListener(this);
+        recyclerView.setAdapter(dailyRecycleViewAdapter);
 
         stateTool.showProgressView();
         getMore(null);
@@ -87,7 +106,10 @@ public class DailyMainFragment extends MainFragment implements  SwipeRefreshLayo
 
         subscriber = new Subscriber<DailiesJson>() {
             @Override
-            public void onCompleted() {}
+            public void onCompleted() {
+                stateTool.closeRefresh(swipeRefreshLayout);
+                dailyRecycleViewAdapter.notifyDataSetChanged();
+            }
 
             @Override
             public void onError(Throwable e) {
@@ -98,7 +120,7 @@ public class DailyMainFragment extends MainFragment implements  SwipeRefreshLayo
             }
 
             @Override
-            public void onNext(DailiesJson dailiesJson) {
+            public void onNext(final DailiesJson dailiesJson) {
                 if (dailiesJson.getStories().size() == 0) {
                     stateTool.showEmptyView();
                     return;
@@ -106,23 +128,26 @@ public class DailyMainFragment extends MainFragment implements  SwipeRefreshLayo
                 if (TextUtils.isEmpty(endDate)) { //如果是首次加载这个界面
                     startDate = dailiesJson.getDate();
                     endDate = dailiesJson.getDate();
-                    dailyRecycleViewAdapter.addList(dailiesJson.getStories());
-                    dailyRecycleViewAdapter.notifyDataSetChanged();
+//                    dailyRecycleViewAdapter.addList(dailiesJson.getStories());
+                    //增加轮播图数据
+                    dailyRecycleViewAdapter.addListToHeader(dailiesJson.getStories(),dailiesJson.getTop_stories());
                     stateTool.showContentView();
                 } else if (targetDate == null) { //表示下拉刷新
                     if (endDate.equals(dailiesJson.getDate())) { //App的最晚时间 等于 下拉新获取的时间
                         swipeRefreshLayout.setRefreshing(false);
                     } else { ////App的最晚时间 不等于 下拉新获取的时间
                         endDate = dailiesJson.getDate();
-                        dailyRecycleViewAdapter.addListToHeader(dailiesJson.getStories());
-                        dailyRecycleViewAdapter.notifyDataSetChanged();
+//                        dailyRecycleViewAdapter.addList(dailiesJson.getStories());
+                        //增加轮播图数据
+                        dailyRecycleViewAdapter.addListToHeader(dailiesJson.getStories(),dailiesJson.getTop_stories());
                        stateTool.showContentView();
                     }
                 } else { //表示上拉加载
                     startDate = dailiesJson.getDate();
-                    dailyRecycleViewAdapter.addList(dailiesJson.getStories());
+//                    dailyRecycleViewAdapter.addList(dailiesJson.getStories());
+                    dailyRecycleViewAdapter.addListToHeader(dailiesJson.getStories(),dailiesJson.getTop_stories());
+                    dailyRecycleViewAdapter.setLoading(false);
                     dailyRecycleViewAdapter.notifyDataSetChanged();
-                    listener.setLoading(false);
                     stateTool.showContentView();
                 }
             }
@@ -132,11 +157,6 @@ public class DailyMainFragment extends MainFragment implements  SwipeRefreshLayo
         } else {
             ZhiHuHttp.getZhiHuHttp().getDailiesBefore(subscriber, targetDate);
         }
-    }
-
-    @Override
-    public void onRefresh() {
-        getMore(null);
     }
 
     @Override
@@ -152,8 +172,8 @@ public class DailyMainFragment extends MainFragment implements  SwipeRefreshLayo
      *                    不为空表示加载更多, 获取指定日期历史数据
      *                    此为纯RxJava
      */
-    @Deprecated
-    private void getDailiesOld(final String tartgetDate) {
+
+    private void getMoreOld(final String tartgetDate) {
         Observable.create(new Observable.OnSubscribe<Boolean>() {
 
             @Override
@@ -167,24 +187,19 @@ public class DailyMainFragment extends MainFragment implements  SwipeRefreshLayo
                     }
                     if (response.isSuccessful()) {
                         DailiesJson dailiesJson = new Gson().fromJson(response.body().string(), DailiesJson.class);
-                        if (TextUtils.isEmpty(endDate)) { //如果是首次加载这个界面
-                            startDate = dailiesJson.getDate();
-                            endDate = dailiesJson.getDate();
-                            dailyRecycleViewAdapter.addList(dailiesJson.getStories());
-                            subscriber.onCompleted();
-                        } else if (tartgetDate == null) { //表示下拉刷新
-                            if (endDate.equals(dailiesJson.getDate())) { //App的最晚时间 等于 下拉新获取的时间
-                                subscriber.onNext(false);
-                            } else { ////App的最晚时间 不等于 下拉新获取的时间
-                                endDate = dailiesJson.getDate();
-                                dailyRecycleViewAdapter.addListToHeader(dailiesJson.getStories());
-                                subscriber.onCompleted();
-                            }
-                        } else { //表示上拉加载
-                            startDate = dailiesJson.getDate();
-                            dailyRecycleViewAdapter.addList(dailiesJson.getStories());
-                            subscriber.onCompleted();
-                        }
+
+                        startDate = dailiesJson.getDate();
+//                            dailyRecycleViewAdapter.addList(dailiesJson.getStories());
+
+                        /**
+                         * 当我使用传两个参数到adapter时，上拉加载需要拖动两次才能正确触发，试了各种方法都不行，还望大神指导下，谢谢
+                         */
+                        dailyRecycleViewAdapter.addListToHeader(dailiesJson.getStories(),dailiesJson.getTop_stories());
+
+                        //增加轮播图数据
+//                      rollPagerAdapter.addTopData(dailiesJson.getTop_stories());
+                        subscriber.onCompleted();
+
                     } else {
                         subscriber.onError(new Exception("error"));
                     }
@@ -200,9 +215,6 @@ public class DailyMainFragment extends MainFragment implements  SwipeRefreshLayo
                     @Override
                     public void onCompleted() {
                         dailyRecycleViewAdapter.notifyDataSetChanged();
-                        if (tartgetDate != null) {
-                            listener.setLoading(false);
-                        }
                     }
 
                     @Override
@@ -215,5 +227,16 @@ public class DailyMainFragment extends MainFragment implements  SwipeRefreshLayo
                         swipeRefreshLayout.setRefreshing(isRefreshing);
                     }
                 });
+    }
+
+    @Override
+    public void loadMoreData() {
+        dailyRecycleViewAdapter.notifyDataSetChanged();
+        getMoreOld(startDate);
+    }
+
+    @Override
+    public void onRefresh() {
+        getMore(null);
     }
 }

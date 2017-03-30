@@ -4,6 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -27,23 +30,23 @@ public class StateTool {
      * 在一个项目中如果用好几张不同的错误页面图片,可以考虑改成成员变量.
      */
     //内容字体的大小,单位SP
-    private static int CONTENT_TEXT_SIZE = 20;
+    private static int CONTENT_TEXT_SIZE = 13;
     //提示字体的大小,单位SP
     private static int TIP_TEXT_SIZE = 12;
 
     //空页面图片,默认用的安卓sdk里面的图片,严重建议替换成一个256px左右的图片 默认使用android.R.drawable.ic_menu_close_clear_cancel
-    private static  int emptyImageResId = R.mipmap.empty;
+    private static  int emptyImageResId = R.mipmap.not_found;
     //错误页面图片,默认用的安卓sdk里面的图片,严重建议替换成一个256px左右的图片 默认使用android.R.drawable.ic_menu_search
-    private static  int errorImageResId = R.mipmap.error;
+    private static  int errorImageResId = R.mipmap.cloud_error;
 
     //空页面文字
-    private static String emptyText = "空页面";
+    private static String emptyText = "页面不见了";
     //错误页面文字
-    private static String errorText = "错误页面";
+    private static String errorText = "似乎出了点问题";
     //加载页面文字
     private static String loadingText = "加载中...";
     //重载动作的文字提示
-    private static String reloadText = "点击重载";
+    private static String reloadText = "重新加载";
 
     //图片的宽和高 可以用ViewGroup.LayoutParams.WRAP_CONTENT
     private static int imageSidesLength = 128;
@@ -51,7 +54,7 @@ public class StateTool {
     private static int offset = 0;
 
     //使用淡入淡出动画
-    private static boolean useAlphaAnimator = false;
+    private static boolean useAlphaAnimator = true;
 
     private ViewGroup root;
     private Context ctx;
@@ -66,7 +69,7 @@ public class StateTool {
     private LinearLayout.LayoutParams paramsChildrenMarginBottom50;
 
     /**
-     * 如果有多个孩子,调用此方法
+     * 如果有多个子view,调用此方法
      * @param root
      */
     public StateTool(ViewGroup root) {
@@ -80,13 +83,13 @@ public class StateTool {
     }
 
     /**
-     * 如果有多个孩子,调用此方法
+     * 如果有多个子view,调用此方法
      * @param root
-     * @param index 传孩子的位置
+     * @param index 传子view的位置
      */
     public StateTool(ViewGroup root, int index) {
         this.root = root;
-        if (root.getChildCount() < index + 1) {
+        if (root.getChildCount() < (index + 1)) {
             throw new RuntimeException("Invalid index " + index +", size is " + root.getChildCount());
         }
         contentView = root.getChildAt(index);
@@ -118,6 +121,24 @@ public class StateTool {
         this.errorText = errorText;
         this.reloadText = reloadText;
         this.loadingText = loadingText;
+    }
+
+    public void showRefresh(final SwipeRefreshLayout swipeRefreshLayout){
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+            }
+        });
+    }
+
+    public void closeRefresh(final SwipeRefreshLayout swipeRefreshLayout){
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     public void showEmptyView(){
@@ -195,6 +216,7 @@ public class StateTool {
 
         TextView tvTip = new TextView(ctx);
         tvTip.setTextSize(TypedValue.COMPLEX_UNIT_SP, TIP_TEXT_SIZE);
+        tvTip.setTextColor(Color.BLUE);
         tvTip.setText(reloadText);
         linearLayout.addView(tvTip, paramsChildrenMarginBottom50);
 
@@ -225,6 +247,7 @@ public class StateTool {
 
         TextView tvTip = new TextView(ctx);
         tvTip.setTextSize(TypedValue.COMPLEX_UNIT_SP, TIP_TEXT_SIZE);
+        tvTip.setTextColor(Color.BLUE);
         tvTip.setText(reloadText);
         linearLayout.addView(tvTip, paramsChildrenMarginBottom50);
 

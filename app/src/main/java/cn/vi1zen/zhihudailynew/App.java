@@ -8,6 +8,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.umeng.analytics.MobclickAgent;
@@ -31,13 +32,13 @@ public class App extends Application {
 
         //Logger配置
         Logger
-                .init("DIWEI")                 // default PRETTYLOGGER or use just init()
+                .init("ZEN")                 // default PRETTYLOGGER or use just init()
                 .methodCount(3)                 // default 2  记录方法调用链的行数,0为隐藏这个模块
                 .hideThreadInfo()               // default shown
                 .logLevel(LogLevel.FULL)        // default LogLevel.FULL
                 .methodOffset(0);                // default 0
 
-
+//        SDKInitializer.initialize(getApplicationContext());//初始化百度地图
         umengAnalytics();
         umengPush();
     }
@@ -66,7 +67,7 @@ public class App extends Application {
             @Override
             public void onSuccess(String deviceToken) {
                 //注册成功会返回device token
-                Log.d("myToken", "App.java - onSuccess() ---------- deviceToken : " + deviceToken);
+                Log.i("myToken", "App.java - onSuccess() ---------- deviceToken : " + deviceToken);
                 MobclickAgent.reportError(App.this, deviceToken);
             }
 

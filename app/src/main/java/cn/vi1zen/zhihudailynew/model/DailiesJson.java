@@ -9,6 +9,7 @@ public class DailiesJson {
 
     private String date;
     private ArrayList<Daily> stories;
+    private ArrayList<TopStory> top_stories;
 
     public String getDate() {
         return date;
@@ -24,5 +25,13 @@ public class DailiesJson {
 
     public void setStories(ArrayList<Daily> stories) {
         this.stories = stories;
+    }
+
+    public ArrayList<TopStory> getTop_stories() {
+        return top_stories;
+    }
+
+    public void setTop_stories(ArrayList<TopStory> top_stories) {
+        this.top_stories = top_stories;
     }
 }

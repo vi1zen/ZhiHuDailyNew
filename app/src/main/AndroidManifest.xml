@@ -4,26 +4,40 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/zhihu_ic_luncher"
+        android:icon="@mipmap/zhihu"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.SplashActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="com.baidu.location.service_v2.2" >
+                </action>
             </intent-filter>
-        </activity>
+        </service>
+
+        <!--百度地图AK-->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="z30TgE2xDLnOccXGI7hoYluhUtlF32So" />
+
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="58c26bb1f43e4839e3000228">
@@ -37,6 +51,14 @@
             android:value="Channel ID" >
         </meta-data>
 
+        <activity android:name=".ui.SplashActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.BaseActivity"/>
         <activity android:name=".ui.MainActivity"/>
         <activity android:name=".ui.daily.DailyDetailActivity"/>
@@ -45,13 +67,9 @@
         <activity android:name=".ui.NewsDetailActivity"/>
         <activity android:name=".ui.special.SpecialActivity"/>
         <activity android:name=".ui.SettingsActivity"/>
-        <activity android:name=".ui.GuideActivity">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
+        <activity android:name=".ui.GuideActivity"/>
+        <activity android:name=".ui.MyBaiduMapActivity"/>
+        <activity android:name=".ui.LoginActivity"/>
     </application>
 
 </manifest>

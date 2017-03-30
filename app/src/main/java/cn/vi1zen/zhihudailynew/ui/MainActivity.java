@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
+import com.baidu.mapapi.map.BaiduMap;
 
 import java.util.ArrayList;
 
@@ -20,14 +22,16 @@ import cn.vi1zen.zhihudailynew.ui.daily.DailyMainFragment;
 import cn.vi1zen.zhihudailynew.ui.hot.HotMainFragment;
 import cn.vi1zen.zhihudailynew.ui.special.SpecialMainFragment;
 import cn.vi1zen.zhihudailynew.ui.theme.ThemeMainFragment;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,DrawerLayout.DrawerListener{
 
     private DrawerLayout drawerLayout;
     private Toolbar toolBar;
     private ViewPager viewPager;
     private AHBottomNavigation bottomNavigation;//底部的BottomNavigation
     private NavigationView navigationView;
+    private CircleImageView circleImageView;
     private int[] tabColors;
     private AHBottomNavigationAdapter navigationAdapter;
     private MyViewPagerAdapter myViewPagerAdapter;
@@ -47,6 +51,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void initViews() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        drawerLayout.addDrawerListener(this);
         //侧滑栏view
         navigationView = (NavigationView) findViewById(R.id.navigationView);
         //头部toolBar
@@ -124,25 +129,55 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.nav_location:
+                startActivity(new Intent(MainActivity.this, MyBaiduMapActivity.class));
+                break;
             case R.id.nav_camera:
-                Snackbar.make(drawerLayout,"你点击了",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(drawerLayout,"功能暂未开发!",Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.nav_gallery:
-
+                Snackbar.make(drawerLayout,"功能暂未开发!",Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.nav_slideshow:
-
+                Snackbar.make(drawerLayout,"功能暂未开发!",Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.nav_manage:
-
+                Snackbar.make(drawerLayout,"功能暂未开发!",Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.nav_share:
-
+                Snackbar.make(drawerLayout,"功能暂未开发!",Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.nav_send:
-
+                Snackbar.make(drawerLayout,"功能暂未开发!",Snackbar.LENGTH_LONG).show();
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+        //头像
+        circleImageView = (CircleImageView) navigationView.findViewById(R.id.avater);
+        circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            }
+        });
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
     }
 }

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#00a2fa</color>
 
     <!-- 自定义颜色 -->
 
@@ -44,4 +44,5 @@
     <!-- 设置里深蓝色字体 -->
     <color name="settings_blue">#0077D1</color>
 
+    <color name="textReader">#727272</color>
 </resources>

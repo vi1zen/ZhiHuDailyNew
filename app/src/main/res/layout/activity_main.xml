@@ -5,6 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:openDrawer="start"
     >
 
     <android.support.design.widget.CoordinatorLayout
@@ -24,7 +25,7 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:titleTextColor="@android:color/white"
-                app:title="知乎日报"
+                app:title="知新日报"
                 >
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
