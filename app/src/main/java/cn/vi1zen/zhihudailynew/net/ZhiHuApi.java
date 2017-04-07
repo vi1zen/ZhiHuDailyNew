@@ -19,7 +19,7 @@ import rx.Observable;
 
 public interface ZhiHuApi {
 
-    @GET("4/start-image/1080*1776")
+    @GET("7/prefetch-launch-images/1080*1920")
     Observable<StartImageJson> getStartImage();
 
     @GET("4/news/latest")

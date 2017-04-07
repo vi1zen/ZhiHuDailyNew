@@ -3,6 +3,7 @@ package cn.vi1zen.zhihudailynew.util;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DateUtil {
 
@@ -27,5 +28,10 @@ public class DateUtil {
 
     public static String format(long time) {
         return dateFormat.format(time);
+    }
+
+    public static String getCurrentDate(){
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        return format.format(new Date());
     }
 }

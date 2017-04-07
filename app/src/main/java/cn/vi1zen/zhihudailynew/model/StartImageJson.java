@@ -1,26 +1,20 @@
 package cn.vi1zen.zhihudailynew.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by Destiny on 2017/3/12.
  */
 
 public class StartImageJson {
-    private String text;
-    private String img;
 
-    public String getText() {
-        return text;
+    private ArrayList<StartImage> creatives;
+
+    public ArrayList<StartImage> getCreatives() {
+        return creatives;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
+    public void setCreatives(ArrayList<StartImage> creatives) {
+        this.creatives = creatives;
     }
 }

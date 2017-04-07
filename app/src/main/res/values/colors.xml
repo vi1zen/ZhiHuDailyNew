@@ -3,9 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#00a2fa</color>
+    <color name="text_day_night">#ff000000</color>
+
+    <!--夜间模式-->
+    <color name="colorPrimaryNight">#ff212121</color><!--3F51B5-->
+    <color name="colorPrimaryDarkNight">#ff212121</color><!--303F9F-->
+    <color name="colorAccentNight">#ff212121</color> <!--#FF4081-->
 
     <!-- 自定义颜色 -->
-
     <color name="tab_textview">#000000</color>
 
     <color name="zhihu_blue">#1F96F2</color>

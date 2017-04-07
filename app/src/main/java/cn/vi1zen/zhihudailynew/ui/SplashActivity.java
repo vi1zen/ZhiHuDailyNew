@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,7 +19,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
@@ -28,11 +33,13 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import cn.vi1zen.zhihudailynew.R;
@@ -41,6 +48,7 @@ import cn.vi1zen.zhihudailynew.net.OkHttpAsync;
 import cn.vi1zen.zhihudailynew.net.ZhiHuApi;
 import cn.vi1zen.zhihudailynew.net.ZhiHuHttp;
 import cn.vi1zen.zhihudailynew.tool.Constants;
+import cn.vi1zen.zhihudailynew.util.ResUtil;
 import cn.vi1zen.zhihudailynew.util.SP;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -54,7 +62,7 @@ import rx.Subscriber;
 
 public class SplashActivity extends Activity {
 
-    private static final String START_IMAGE_URL = "http://news-at.zhihu.com/api/7/prefetch-launch-images/1080*1920";
+    private static final String START_IMAGE_JSON_URL = "http://news-at.zhihu.com/api/7/prefetch-launch-images/1080*1920";
     private String img_url = "";
     private static final String START_IMAGE_FILE = "startImage";
     private MyAsyncTask myAsyncTask;
@@ -74,9 +82,9 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         imageView = (ImageView) findViewById(R.id.iv_start);
-        imageView.setBackgroundResource(R.mipmap.star);
+//        imageView.setBackgroundResource(R.mipmap.star);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
+
 //        OkHttpAsync.get(START_IMAGE_URL, new Callback() {
 //            @Override
 //            public void onFailure(Call call, IOException e) {
@@ -124,14 +132,14 @@ public class SplashActivity extends Activity {
 //
 //            }
 //        });
+        getStartImage();
+//        setAnimation();
 
-        setAnimation();
-//        getStartImage();
     }
 
     private void setAnimation() {
-        imageView.setPivotX(imageView.getWidth()*0.3f);
-        imageView.setPivotY(imageView.getHeight()*0.25f);
+        imageView.setPivotX(imageView.getWidth()*0.5f);
+        imageView.setPivotY(imageView.getHeight()*0.5f);
         ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(imageView,"scaleX",1,1.25f);
         ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(imageView,"scaleY",1,1.25f);
         AnimatorSet set = new AnimatorSet();
@@ -144,9 +152,8 @@ public class SplashActivity extends Activity {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-//                Toast.makeText(SplashActivity.this,"已完成启动页动画！",Toast.LENGTH_SHORT).show();
-                SplashActivity.this.startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                SplashActivity.this.finish();
+                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                finish();
             }
 
             @Override
@@ -177,9 +184,9 @@ public class SplashActivity extends Activity {
             }
 
             @Override
-            public void onNext(StartImageJson startImageJson) {
+            public void onNext(final StartImageJson startImageJson) {
                 //如果本地存的图片就是最新的图片,那么不用下载更新
-                OkHttpAsync.get(startImageJson.getImg(), new Callback() {
+                /*OkHttpAsync.get(startImageJson.getUrl(), new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Logger.e(e,"连接错误！");
@@ -188,6 +195,38 @@ public class SplashActivity extends Activity {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         OkHttpAsync.saveFile(response, Constants.STORAGE_DIR, START_IMAGE_FILE);
+                    }
+                });*/
+
+                Log.i("IMAGE","startImageJson.getCreatives().get(0).getUrl() = " + startImageJson.getCreatives().get(0).getUrl());
+                img_url = startImageJson.getCreatives().get(0).getUrl();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        File file = new File(Constants.STORAGE_DIR,Constants.FILE_NAME);
+                        if(file.exists()){
+                            Glide.with(SplashActivity.this)
+                                    .load(file)
+                                    .centerCrop()
+                                    .into(imageView);
+                            progressBar.setVisibility(View.GONE);
+                            setAnimation();
+                        }else{
+                            Glide.with(SplashActivity.this)
+                                    .load(img_url)
+                                    .centerCrop()
+                                    .into(new GlideDrawableImageViewTarget(imageView){
+                                        @Override
+                                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                                            super.onResourceReady(resource, animation);
+                                            Bitmap bmp = ResUtil.drawableToBitmap(resource);
+                                            ResUtil.saveImage(bmp);
+                                            progressBar.setVisibility(View.GONE);
+                                            setAnimation();
+                                        }
+                                    });
+                        }
                     }
                 });
             }

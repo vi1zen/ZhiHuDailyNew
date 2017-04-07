@@ -195,7 +195,6 @@ public class DailyMainFragment extends MainFragment implements  DailyRecycleView
                          * 当我使用传两个参数到adapter时，上拉加载需要拖动两次才能正确触发，试了各种方法都不行，还望大神指导下，谢谢
                          */
                         dailyRecycleViewAdapter.addListToHeader(dailiesJson.getStories(),dailiesJson.getTop_stories());
-
                         //增加轮播图数据
 //                      rollPagerAdapter.addTopData(dailiesJson.getTop_stories());
                         subscriber.onCompleted();
@@ -231,8 +230,8 @@ public class DailyMainFragment extends MainFragment implements  DailyRecycleView
 
     @Override
     public void loadMoreData() {
-        dailyRecycleViewAdapter.notifyDataSetChanged();
         getMoreOld(startDate);
+        dailyRecycleViewAdapter.notifyDataSetChanged();
     }
 
     @Override
