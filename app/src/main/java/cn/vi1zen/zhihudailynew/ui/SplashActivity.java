@@ -64,6 +64,7 @@ public class SplashActivity extends Activity {
 
     private static final String START_IMAGE_JSON_URL = "http://news-at.zhihu.com/api/7/prefetch-launch-images/1080*1920";
     private String img_url = "";
+    private String img_id = "";
     private static final String START_IMAGE_FILE = "startImage";
     private MyAsyncTask myAsyncTask;
     private ImageView imageView;
@@ -78,63 +79,14 @@ public class SplashActivity extends Activity {
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
             finish();
         }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         imageView = (ImageView) findViewById(R.id.iv_start);
 //        imageView.setBackgroundResource(R.mipmap.star);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-//        OkHttpAsync.get(START_IMAGE_URL, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//
-//            }
-//
-//            //子线程
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                String str = response.body().string();
-//                try {
-//                    JSONObject jsonObject = new JSONObject(str);
-//                    JSONArray rootObject =  jsonObject.getJSONArray("creatives");
-//                    JSONObject creatives = (JSONObject) rootObject.get(0);
-//                    final String url = creatives.getString("url");
-//                    final String text = creatives.getString("text");
-//                    final StartImageJson startImageJson = new StartImageJson();
-//
-//
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            /*startImageJson.setImg(url);
-//                            startImageJson.setText(text);
-//                            Log.i("IMAGES",url);
-//
-//                            Glide.with(getApplicationContext()).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
-//                                @Override
-//                                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-//                                    imageView.setImageBitmap(resource);
-//                                }
-//                            });*/
-//                            myAsyncTask = new MyAsyncTask();
-//                            myAsyncTask.execute(url);
-//                        }
-//                    });
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }finally {
-//                    if(response.body() != null) {
-//                        response.body().close();
-//                    }
-//                }
-//
-//            }
-//        });
+        progressBar.setVisibility(View.GONE);
         getStartImage();
-//        setAnimation();
-
+        setAnimation();
     }
 
     private void setAnimation() {
@@ -198,35 +150,36 @@ public class SplashActivity extends Activity {
                     }
                 });*/
 
-                Log.i("IMAGE","startImageJson.getCreatives().get(0).getUrl() = " + startImageJson.getCreatives().get(0).getUrl());
+//                Log.i("IMAGE","startImageJson.getCreatives().get(0).getUrl() = " + startImageJson.getCreatives().get(0).getUrl());
                 img_url = startImageJson.getCreatives().get(0).getUrl();
+                img_id = startImageJson.getCreatives().get(0).getId();
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        File file = new File(Constants.STORAGE_DIR,Constants.FILE_NAME);
+                        File file = new File(Constants.STORAGE_DIR,img_id + ".jpg");
+
                         if(file.exists()){
                             Glide.with(SplashActivity.this)
                                     .load(file)
                                     .centerCrop()
                                     .into(imageView);
-                            progressBar.setVisibility(View.GONE);
-                            setAnimation();
                         }else{
+                            Log.i("IMAGE","下载图片");
                             Glide.with(SplashActivity.this)
                                     .load(img_url)
                                     .centerCrop()
-                                    .into(new GlideDrawableImageViewTarget(imageView){
+                                    .into(new GlideDrawableImageViewTarget(imageView) {
                                         @Override
                                         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
                                             super.onResourceReady(resource, animation);
                                             Bitmap bmp = ResUtil.drawableToBitmap(resource);
-                                            ResUtil.saveImage(bmp);
-                                            progressBar.setVisibility(View.GONE);
-                                            setAnimation();
+                                            ResUtil.saveImage(bmp, img_id + ".jpg");
                                         }
                                     });
                         }
+
+
                     }
                 });
             }

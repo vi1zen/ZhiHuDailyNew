@@ -1,6 +1,7 @@
 package cn.vi1zen.zhihudailynew.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -15,13 +16,17 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.baidu.mapapi.map.BaiduMap;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import cn.vi1zen.zhihudailynew.R;
+import cn.vi1zen.zhihudailynew.tool.Constants;
 import cn.vi1zen.zhihudailynew.ui.daily.DailyMainFragment;
 import cn.vi1zen.zhihudailynew.ui.hot.HotMainFragment;
 import cn.vi1zen.zhihudailynew.ui.special.SpecialMainFragment;
 import cn.vi1zen.zhihudailynew.ui.theme.ThemeMainFragment;
+import cn.vi1zen.zhihudailynew.util.ResUtil;
+import cn.vi1zen.zhihudailynew.view.MyPopupWindow;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,DrawerLayout.DrawerListener{
@@ -61,6 +66,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
+                    case R.id.share:
+                        Bitmap bitmap = ResUtil.screenShot(MainActivity.this);
+                        String imgPath = ResUtil.saveImage(bitmap,"zh_screenshot.jpg");
+
+                        if("".equals(imgPath)){
+                            File file = new File(Constants.STORAGE_DIR,"zh_screenshot.jpg");
+                            imgPath = file.getAbsolutePath();
+                        }
+//                        String imgUrl = ResUtil.insertImageToSystem(MainActivity.this,imgPath);
+                        MyPopupWindow mPopupWindow = new MyPopupWindow(MainActivity.this);
+                        mPopupWindow.addImage(bitmap,imgPath);
+                        mPopupWindow.showPopupWindow(toolBar);
+                        break;
                     case R.id.setting:
                         //跳转到设置页面
                         MainActivity.this.startActivity(new Intent(MainActivity.this,SettingsActivity.class));

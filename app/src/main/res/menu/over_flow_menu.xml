@@ -12,5 +12,11 @@
             android:title="关于"
             app:showAsAction="never"
             ></item>
+        <item
+            android:id="@+id/share"
+            android:title="分享"
+            android:icon="@mipmap/share"
+            app:showAsAction="always"
+            />
     </group>
 </menu>

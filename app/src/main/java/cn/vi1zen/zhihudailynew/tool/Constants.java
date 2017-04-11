@@ -13,5 +13,5 @@ import cn.vi1zen.zhihudailynew.util.DateUtil;
 
 public class Constants {
     public static final String STORAGE_DIR = Environment.getExternalStorageDirectory()+ File.separator + App.app.getPackageName() + File.separator;;
-    public static String FILE_NAME = "zh_start_img_"+ DateUtil.getCurrentDate() + ".jpg";
+    public static final String FILE_NAME = "zh_start_img_"+ DateUtil.getCurrentDate() + ".jpg";
 }
