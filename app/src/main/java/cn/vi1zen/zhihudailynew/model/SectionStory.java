@@ -4,9 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-/**
- * Created by Administrator on 2016/9/13.
- */
 public class SectionStory {
 
     private int id;

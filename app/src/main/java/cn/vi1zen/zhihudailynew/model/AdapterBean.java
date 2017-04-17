@@ -1,10 +1,6 @@
 package cn.vi1zen.zhihudailynew.model;
 
-/**
- * Author White
- * Date 2016/8/18
- * Time 14:04
- */
+
 public class AdapterBean {
     public static final int TYPE_TITLE = 1;
     public static final int TYPE_FOOTER = 2;

@@ -11,11 +11,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Author White
- * Date 2016/8/13
- * Time 12:13
- */
 public class CommonUtil {
 
     /**

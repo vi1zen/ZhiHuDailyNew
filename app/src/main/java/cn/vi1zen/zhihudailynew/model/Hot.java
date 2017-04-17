@@ -2,9 +2,6 @@ package cn.vi1zen.zhihudailynew.model;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Administrator on 2016/9/12.
- */
 public class Hot {
 
     @SerializedName("news_id")

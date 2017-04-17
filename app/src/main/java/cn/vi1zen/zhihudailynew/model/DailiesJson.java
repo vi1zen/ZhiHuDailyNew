@@ -3,7 +3,7 @@ package cn.vi1zen.zhihudailynew.model;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2016/7/24.
+ * Created by Desiny on 2017/3/15.
  */
 public class DailiesJson {
 

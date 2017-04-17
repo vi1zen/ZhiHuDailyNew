@@ -4,10 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-/**
- * Created by Administrator on 2016/9/10.
- * Daily详情
- */
 public class ThemeJson {
 
     private ArrayList<ThemeStory> stories;

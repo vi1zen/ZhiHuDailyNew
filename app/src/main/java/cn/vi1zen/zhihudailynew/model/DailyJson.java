@@ -4,10 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-/**
- * Created by Administrator on 2016/7/26.
- * Daily详情
- */
+
 public class DailyJson {
 
     private String body;

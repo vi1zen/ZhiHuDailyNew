@@ -135,13 +135,6 @@ public class NewsDetailActivity extends BaseActivity {
                 }
 
                 Glide.with(NewsDetailActivity.this).load(dailyJson.getImage()).placeholder(R.mipmap.liukanshan).into(ivImage);
-//                if(!TextUtils.isEmpty(dailyJson.getImage())) {
-//                    Glide.with(NewsDetailActivity.this).load(dailyJson.getImage()).placeholder(R.mipmap.liukanshan).into(ivImage);
-//                }else{
-//                    // TODO
-//                    ivImage.setVisibility(View.GONE);
-//                    viewBg.setVisibility(View.GONE);
-//                }
             }
         };
 

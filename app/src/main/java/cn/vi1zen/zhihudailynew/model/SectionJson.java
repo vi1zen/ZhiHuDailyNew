@@ -2,9 +2,6 @@ package cn.vi1zen.zhihudailynew.model;
 
 import java.util.ArrayList;
 
-/**
- * Created by Administrator on 2016/9/13.
- */
 public class SectionJson {
 
     private long timestamp;

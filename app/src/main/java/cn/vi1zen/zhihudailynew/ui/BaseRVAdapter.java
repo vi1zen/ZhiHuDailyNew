@@ -15,11 +15,7 @@ import butterknife.ButterKnife;
 import cn.vi1zen.zhihudailynew.R;
 import cn.vi1zen.zhihudailynew.model.AdapterBean;
 
-/**
- * Author White
- * Date 2016/8/16
- * Time 11:50
- */
+
 public abstract class BaseRVAdapter<T extends AdapterBean> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 

@@ -7,11 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Author White
- * Date 2016/8/13
- * Time 14:46
- */
 public class Story implements Serializable {
 
     private String title;// 新闻标题

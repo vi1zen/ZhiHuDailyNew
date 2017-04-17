@@ -1,8 +1,6 @@
 package cn.vi1zen.zhihudailynew.model;
 
-/**
- * Created by Administrator on 2016/9/16.
- */
+
 public class Recommender {
 
     private int id;

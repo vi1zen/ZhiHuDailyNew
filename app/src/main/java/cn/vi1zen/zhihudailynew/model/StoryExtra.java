@@ -4,9 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-/**
- * Created by Administrator on 2016/8/30.
- */
 public class StoryExtra implements Serializable {
 
     private int popularity;

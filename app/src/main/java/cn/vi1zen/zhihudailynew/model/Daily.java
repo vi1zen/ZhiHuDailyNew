@@ -5,10 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by Destiny on 2017/3/15.
- * 列表里面的Daily Item
- */
 public class Daily implements Serializable {
 
     private int id;
