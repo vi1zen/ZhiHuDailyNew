@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <SurfaceView
+            android:id="@+id/previewSV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <cn.vi1zen.zhihudailynew.view.DrawImageView
+            android:id="@+id/drawIV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/photoImgBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/icon_take_photo"
+        android:layout_marginTop="-50dp"
+        android:layout_gravity="center" />
+
+</LinearLayout>

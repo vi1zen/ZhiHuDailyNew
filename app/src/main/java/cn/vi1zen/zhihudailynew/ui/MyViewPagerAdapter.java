@@ -11,7 +11,7 @@ import cn.vi1zen.zhihudailynew.tool.FragmentPagerAdapter;
 import cn.vi1zen.zhihudailynew.ui.MainFragment;
 
 /**
- * Created by Destiny on 2017/3/14.
+ * Created by vi1zen on 2017/3/14.
  */
 
 public class MyViewPagerAdapter extends FragmentPagerAdapter {

@@ -24,7 +24,7 @@ import java.util.TimerTask;
 
 /**
  * ViewPager实现的轮播图广告自定义视图，既支持自动轮播页面也支持手势滑动切换页面
- * Created by Destiny on 2017/3/24.
+ * Created by vi1zen on 2017/3/24.
  */
 
 public class CarouselImageView extends FrameLayout implements View.OnClickListener {

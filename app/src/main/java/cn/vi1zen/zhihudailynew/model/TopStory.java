@@ -5,9 +5,6 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
-/**
- * @author Destiny 2017-03-29
- */
 public class TopStory implements Serializable {
     private int id;
     private String title;

@@ -12,7 +12,8 @@
 
     <!-- 自定义颜色 -->
     <color name="tab_textview">#000000</color>
-
+    <color name="gray">#cccccc</color>
+    <color name="deep_gray">#8A8A8A</color>
     <color name="zhihu_blue">#1F96F2</color>
     <color name="zhihu_icon_blue">#39C6FB</color>
 

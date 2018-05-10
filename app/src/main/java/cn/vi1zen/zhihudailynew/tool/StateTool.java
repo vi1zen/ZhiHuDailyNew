@@ -20,7 +20,7 @@ import android.widget.TextView;
 import cn.vi1zen.zhihudailynew.R;
 
 /**
- * Created by Destiny on 2017/3/15.
+ * Created by vi1zen on 2017/3/15.
  */
 
 public class StateTool {

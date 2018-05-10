@@ -1,7 +1,7 @@
 package cn.vi1zen.zhihudailynew.net;
 
 /**
- * Created by Destiny on 2017/3/15.
+ * Created by vi1zen on 2017/3/15.
  */
 public interface UrlConstants {
 

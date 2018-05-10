@@ -44,10 +44,13 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Destiny on 2017/3/14.
+ * Created by vi1zen on 2017/3/14.
  */
 
 public class DailyMainFragment extends MainFragment implements  DailyRecycleViewAdapter.LoadMoreDataListener,SwipeRefreshLayout.OnRefreshListener{
+
+    private static final String TAG = "DailyMainFragment";
+
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private LinearLayout linearLayout;
@@ -191,9 +194,7 @@ public class DailyMainFragment extends MainFragment implements  DailyRecycleView
                         startDate = dailiesJson.getDate();
 //                            dailyRecycleViewAdapter.addList(dailiesJson.getStories());
 
-                        /**
-                         * 当我使用传两个参数到adapter时，上拉加载需要拖动两次才能正确触发，试了各种方法都不行，还望大神指导下，谢谢
-                         */
+                        Log.d(TAG, "call: top_story = " + dailiesJson.getTop_stories() + "story == " + dailiesJson.getStories());
                         dailyRecycleViewAdapter.addListToHeader(dailiesJson.getStories(),dailiesJson.getTop_stories());
                         //增加轮播图数据
 //                      rollPagerAdapter.addTopData(dailiesJson.getTop_stories());
@@ -213,6 +214,8 @@ public class DailyMainFragment extends MainFragment implements  DailyRecycleView
 
                     @Override
                     public void onCompleted() {
+                        swipeRefreshLayout.setRefreshing(false);
+                        dailyRecycleViewAdapter.setLoading(false);
                         dailyRecycleViewAdapter.notifyDataSetChanged();
                     }
 
@@ -223,6 +226,7 @@ public class DailyMainFragment extends MainFragment implements  DailyRecycleView
 
                     @Override
                     public void onNext(Boolean isRefreshing) {
+                        Log.d(TAG, "onNext......... isRefreshing = " + isRefreshing);
                         swipeRefreshLayout.setRefreshing(isRefreshing);
                     }
                 });
@@ -232,6 +236,7 @@ public class DailyMainFragment extends MainFragment implements  DailyRecycleView
     public void loadMoreData() {
         getMoreOld(startDate);
         dailyRecycleViewAdapter.notifyDataSetChanged();
+
     }
 
     @Override

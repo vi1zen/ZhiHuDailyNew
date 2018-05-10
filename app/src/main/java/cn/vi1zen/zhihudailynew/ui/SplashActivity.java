@@ -12,6 +12,7 @@ import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,7 +58,7 @@ import okhttp3.Response;
 import rx.Subscriber;
 
 /**
- * Created by Destiny on 2017/3/10.
+ * Created by vi1zen on 2017/3/10.
  */
 
 public class SplashActivity extends Activity {
@@ -71,6 +72,7 @@ public class SplashActivity extends Activity {
     private ProgressBar progressBar;
 
     private static final Handler mHandler = new Handler();
+    private AnimatorSet set;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +96,7 @@ public class SplashActivity extends Activity {
         imageView.setPivotY(imageView.getHeight()*0.5f);
         ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(imageView,"scaleX",1,1.25f);
         ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(imageView,"scaleY",1,1.25f);
-        AnimatorSet set = new AnimatorSet();
+        set = new AnimatorSet();
         set.setDuration(2000).setStartDelay(1000);
         set.addListener(new Animator.AnimatorListener() {
             @Override
@@ -133,6 +135,13 @@ public class SplashActivity extends Activity {
             @Override
             public void onError(Throwable e) {
                 Logger.e(e,"Subscriber onError()");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageView.setImageResource(R.mipmap.star);
+                    }
+                });
+
             }
 
             @Override
@@ -151,8 +160,14 @@ public class SplashActivity extends Activity {
                 });*/
 
 //                Log.i("IMAGE","startImageJson.getCreatives().get(0).getUrl() = " + startImageJson.getCreatives().get(0).getUrl());
-                img_url = startImageJson.getCreatives().get(0).getUrl();
-                img_id = startImageJson.getCreatives().get(0).getId();
+                if(startImageJson.getCreatives().get(0).getUrl() != null) {
+                    img_url = startImageJson.getCreatives().get(0).getUrl();
+                    img_id = startImageJson.getCreatives().get(0).getId();
+                }else {
+                    imageView.setImageResource(R.mipmap.star);
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    finish();
+                }
 
                 runOnUiThread(new Runnable() {
                     @Override

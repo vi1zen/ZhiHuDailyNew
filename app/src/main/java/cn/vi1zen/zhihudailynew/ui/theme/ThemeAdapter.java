@@ -21,7 +21,7 @@ import cn.vi1zen.zhihudailynew.model.Theme;
 import cn.vi1zen.zhihudailynew.tool.OnItemClickListener;
 
 /**
- * Created by Destiny on 2017/3/18.
+ * Created by vi1zen on 2017/3/18.
  */
 public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ThemeHolder> {
 

@@ -9,7 +9,7 @@ import butterknife.ButterKnife;
 import cn.vi1zen.zhihudailynew.R;
 
 /**
- * Created by Destiny on 2017/3/19.
+ * Created by vi1zen on 2017/3/19.
  */
 
 public class AboutActivity extends BaseActivity{

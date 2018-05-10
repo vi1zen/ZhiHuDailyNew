@@ -7,13 +7,13 @@ import android.view.KeyEvent;
 import android.widget.VideoView;
 
 /**
- * Created by Destiny on 2017/3/20.
+ * Created by vi1zen on 2017/3/20.
  */
 
 public class CustomVideoView extends VideoView {
     /**
      * 视频播放,主要是因为手机的大小很多，不能保证原生的VideoView能实现全屏
-     * Created by Destiny on 16/2/18.
+     * Created by vi1zen on 16/2/18.
      */
 
         public CustomVideoView(Context context) {

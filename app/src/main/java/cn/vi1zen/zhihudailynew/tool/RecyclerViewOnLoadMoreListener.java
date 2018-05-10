@@ -7,7 +7,7 @@ import android.util.Log;
 import cn.vi1zen.zhihudailynew.ui.daily.DailyRecycleViewAdapter;
 
 /**
- * Created by Destiny on 2017/3/15.
+ * Created by vi1zen on 2017/3/15.
  */
 public abstract class RecyclerViewOnLoadMoreListener extends RecyclerView.OnScrollListener {
 

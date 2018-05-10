@@ -3,7 +3,7 @@ package cn.vi1zen.zhihudailynew.model;
 import java.util.ArrayList;
 
 /**
- * Created by Destiny on 2017/3/12.
+ * Created by vi1zen on 2017/3/12.
  */
 
 public class StartImageJson {

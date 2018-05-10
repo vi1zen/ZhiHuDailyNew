@@ -27,7 +27,7 @@ import cn.vi1zen.zhihudailynew.R;
 import cn.vi1zen.zhihudailynew.tool.MyOrientationListener;
 
 /**
- * Created by Destiny on 2017/3/28.
+ * Created by vi1zen on 2017/3/28.
  */
 
 public class MyBaiduMapActivity extends Activity implements View.OnClickListener{

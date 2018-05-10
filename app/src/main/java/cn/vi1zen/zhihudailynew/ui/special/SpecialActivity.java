@@ -27,7 +27,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Destiny on 2017/3/20.
+ * Created by vi1zen on 2017/3/20.
  */
 
 public class SpecialActivity extends BaseActivity{

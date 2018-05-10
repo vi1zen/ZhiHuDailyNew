@@ -3,7 +3,7 @@ package cn.vi1zen.zhihudailynew.model;
 import java.io.Serializable;
 
 /**
- * Created by Destiny on 2017/4/7.
+ * Created by vi1zen on 2017/4/7.
  */
 
 public class StartImage implements Serializable{

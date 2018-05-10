@@ -1,7 +1,11 @@
 package cn.vi1zen.zhihudailynew.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -9,8 +13,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
@@ -31,6 +37,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,DrawerLayout.DrawerListener{
 
+    private static final String TAG = "MainActivity";
+
+    private static final int REQUEST_PERMISSION_CAMERA_CODE = 1;
+    private static final int REQUEST_PERMISSION_STORAGE_CODE = 2;
     private DrawerLayout drawerLayout;
     private Toolbar toolBar;
     private ViewPager viewPager;
@@ -147,14 +157,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.nav_location:
+            case R.id.nav_location://定位
                 startActivity(new Intent(MainActivity.this, MyBaiduMapActivity.class));
                 break;
-            case R.id.nav_camera:
-                Snackbar.make(drawerLayout,"功能暂未开发!",Snackbar.LENGTH_LONG).show();
+            case R.id.nav_camera://相机
+                requestPermission();
+                startActivity(new Intent(MainActivity.this, IdCardScanActivity.class));
                 break;
-            case R.id.nav_gallery:
-                Snackbar.make(drawerLayout,"功能暂未开发!",Snackbar.LENGTH_LONG).show();
+            case R.id.nav_gallery://相册
+//                startActivity(new Intent(MainActivity.this,GalleryActivity.class));
+                startActivity(new Intent(MainActivity.this,IdCardOcrActivity.class));
                 break;
             case R.id.nav_slideshow:
                 Snackbar.make(drawerLayout,"功能暂未开发!",Snackbar.LENGTH_LONG).show();
@@ -197,5 +209,33 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onDrawerStateChanged(int newState) {
 
+    }
+
+    private boolean requestPermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(!(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)){
+                requestPermissions(new String[]{Manifest.permission.CAMERA,Manifest.permission_group.STORAGE},REQUEST_PERMISSION_CAMERA_CODE);
+                return false;
+            }else if(!(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)){
+                Log.d(TAG, "requestPermission: 存储读写权限未获取...");
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_PERMISSION_STORAGE_CODE);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_CAMERA_CODE) {
+            int grantResult = grantResults[0];
+            boolean granted = grantResult == PackageManager.PERMISSION_GRANTED;
+            Log.i(TAG, "onRequestPermissionsResult granted=" + granted);
+        }else if(requestCode == REQUEST_PERMISSION_STORAGE_CODE){
+            int grantResult = grantResults[0];
+            boolean granted = grantResult == PackageManager.PERMISSION_GRANTED;
+            Log.i(TAG, "onRequestPermissionsResult granted=" + granted);
+        }
     }
 }

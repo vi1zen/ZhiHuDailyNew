@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Android Studio"
+        android:text="vi1zen"
         android:textColor="@android:color/white"
         />
 
@@ -26,6 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="android studio@android.com"
+        android:text="http://vi1zen.cn"
         android:textColor="@android:color/white"/>
 </LinearLayout>

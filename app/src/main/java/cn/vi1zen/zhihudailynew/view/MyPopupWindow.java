@@ -26,7 +26,7 @@ import cn.vi1zen.zhihudailynew.tool.Constants;
 import cn.vi1zen.zhihudailynew.util.ResUtil;
 
 /**
- * Created by Destiny on 2017/4/8.
+ * Created by vi1zen on 2017/4/8.
  */
 
 public class MyPopupWindow extends PopupWindow implements View.OnClickListener{

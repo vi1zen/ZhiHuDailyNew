@@ -33,7 +33,7 @@ import cn.vi1zen.zhihudailynew.tool.RollPagerAdapter;
 import cn.vi1zen.zhihudailynew.ui.NewsDetailActivity;
 
 /**
- * Created by Destiny on 2017/3/15.
+ * Created by vi1zen on 2017/3/15.
  */
 
 public class DailyRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -108,13 +108,11 @@ public class DailyRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 //                    }
                    // RecyclerView.canScrollVertically(1)的值表示是否能向上滚动，false表示已经滚动到底部
                    // RecyclerView.canScrollVertically(-1)的值表示是否能向下滚动，false表示已经滚动到顶部
-                   if(!isLoading && !mRecyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE ){
+                   if(!mRecyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE ){
                        Log.i("LOADMORE","已经滑动到底部了。。。"+ (mMoreDataListener == null));
                        if (mMoreDataListener != null) {
                             mMoreDataListener.loadMoreData();
                         }
-                        isLoading = true;
-
                    }
                 }
             });
@@ -174,11 +172,19 @@ public class DailyRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void addList(ArrayList<Daily> stories) {
         this.stories.addAll(stories);
     }
-    public void addListToHeader(ArrayList<Daily> stories,ArrayList<TopStory> topStories) {
+    public void addListToHeader(final ArrayList<Daily> stories, ArrayList<TopStory> topStories) {
         this.stories.addAll(stories);
-        this.topStories.addAll(0,topStories);
-        notifyItemInserted(getItemCount());
-        Log.i("LOADMORE", "addListToHeader: ....");
+        if(topStories != null){
+            this.topStories.addAll(0,topStories);
+        }
+        mRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                notifyItemInserted(getItemCount());
+                notifyItemRangeInserted(getItemCount(),stories.size());
+                Log.i("LOADMORE", "addListToHeader: ....");
+            }
+        });
     }
     public void addData(ArrayList<TopStory> topStories){
         this.topStories.addAll(0,topStories);
@@ -246,7 +252,7 @@ public class DailyRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public interface LoadMoreDataListener {
         void loadMoreData();
-    };
+    }
 
     //加载更多监听方法
     public void setOnMoreDataLoadListener(LoadMoreDataListener onMoreDataLoadListener) {

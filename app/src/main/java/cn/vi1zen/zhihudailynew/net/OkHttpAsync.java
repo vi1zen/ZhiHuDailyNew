@@ -15,7 +15,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by Destiny on 2017/3/13.
+ * Created by vi1zen on 2017/3/13.
  * 异步网络请求
  */
 

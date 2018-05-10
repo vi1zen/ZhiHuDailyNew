@@ -29,10 +29,6 @@ import cn.vi1zen.zhihudailynew.ui.NewsDetailActivity;
 import cn.vi1zen.zhihudailynew.util.CommonUtil;
 import cn.vi1zen.zhihudailynew.view.RollViewPager;
 
-/**
- * @author Destiny
- * 2017-3-26 14:59:50
- */
 public class StoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     protected View mHeaderView;

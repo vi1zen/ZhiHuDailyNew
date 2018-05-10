@@ -1,9 +1,14 @@
 package cn.vi1zen.zhihudailynew.net;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import cn.vi1zen.zhihudailynew.tool.Constants;
+import cn.vi1zen.zhihudailynew.util.YoutuUtils;
+import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -13,7 +18,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Created by Destiny on 2017/3/15.
+ * Created by vi1zen on 2017/3/15.
  */
 public class OkHttpSync {
 
@@ -23,16 +28,20 @@ public class OkHttpSync {
     private static final OkHttpClient client;
 
     static {
-        client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS).build();
+        client = new OkHttpClient.Builder()
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .writeTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(15, TimeUnit.SECONDS)
+                .build();
+
     }
 
     public static Response get(String url) throws IOException {
         return get(client, url);
     }
 
-    public static Response postParams(String url, FormBody formBody) throws IOException {
-        return postParams(client, url, formBody);
+    public static void postParams(String url, RequestBody requestBody, Callback callback) throws IOException {
+        postParams(client, url, requestBody,callback);
     }
 
     public static Response postFile(String url, File file) throws IOException {
@@ -48,9 +57,23 @@ public class OkHttpSync {
         return okHttpClient.newCall(request).execute();
     }
 
-    public static Response postParams(OkHttpClient okHttpClient, String url, FormBody formBody) throws IOException {
-        Request request = new Request.Builder().url(url).post(formBody).build();
-        return okHttpClient.newCall(request).execute();
+    public static void postParams(OkHttpClient okHttpClient, String url, RequestBody requestBody, Callback callback) throws IOException {
+        StringBuffer mySign = new StringBuffer("");
+        YoutuUtils.appSign(Constants.TENCENT_YOUTU_APPID,Constants.TENCENT_YOUTU_SECRETID,
+                Constants.TENCENT_YOUTU_SECRETKEY,2592000,"278250644",mySign);
+        Log.i("IdCard","Authorization = "+mySign.toString());
+        Request request = new Request.Builder()
+                .url(url)
+//                .header("accept","*/*")
+//                .header("Authorization",mySign.toString())
+                .removeHeader("Authorization")
+                .addHeader("Authorization",mySign.toString())
+                .addHeader("Host","api.youtu.qq.com")
+                .addHeader("Content-Length", String.valueOf(requestBody.contentLength()))
+                .addHeader("Content-Type","text/json")
+                .post(requestBody)
+                .build();
+        okHttpClient.newCall(request).enqueue(callback);
     }
 
     public static Response postFile(OkHttpClient okHttpClient, String url, File file) throws IOException {

@@ -14,7 +14,7 @@ import java.util.List;
 import cn.vi1zen.zhihudailynew.model.Daily;
 
 /**
- * Created by Destiny on 2017/3/24.
+ * Created by vi1zen on 2017/3/24.
  */
 
 public class CarouselImageAdapter extends PagerAdapter {

@@ -53,5 +53,8 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.ashokvarma.android:bottom-navigation-bar:1.2.0'
     compile 'com.jude:rollviewpager:1.4.6'
+    compile 'com.jph.takephoto:takephoto_library:4.0.3'
     compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/json.jar')
+    compile files('libs/youtu-java-sdk.jar')
 }

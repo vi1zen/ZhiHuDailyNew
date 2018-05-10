@@ -21,7 +21,7 @@ import cn.vi1zen.zhihudailynew.model.Section;
 import cn.vi1zen.zhihudailynew.tool.OnItemClickListener;
 
 /**
- * Created by Destiny on 2017/3/20.
+ * Created by vi1zen on 2017/3/20.
  */
 
 public class SpecialAdapter extends RecyclerView.Adapter<SpecialAdapter.SpecialHolder>{

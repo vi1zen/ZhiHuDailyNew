@@ -21,7 +21,7 @@ import cn.vi1zen.zhihudailynew.R;
 import cn.vi1zen.zhihudailynew.model.TopStory;
 
 /**
- * Created by Destiny on 2017/3/29.
+ * Created by vi1zen on 2017/3/29.
  */
 
 public class RollPagerAdapter extends LoopPagerAdapter{

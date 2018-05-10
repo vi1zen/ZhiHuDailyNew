@@ -12,7 +12,7 @@ import cn.vi1zen.zhihudailynew.R;
 
 
 /**
- * Created by Destiny on 2017/3/21.
+ * Created by vi1zen on 2017/3/21.
  */
 
 public class SettingSwitchCompat extends RelativeLayout {
